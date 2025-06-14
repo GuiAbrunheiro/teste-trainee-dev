@@ -8,6 +8,7 @@
   </div>
   <div class="todo-buttons">
     <button (click)="sortTodosByTitle()">Ordenar de A a Z</button>
+    <button (click)="exportToPDF()">Exportar para pdf</button>
     <button class="toggle-button" (click)="toggleCompletedTasks()">
       {{ showCompletedTasks ? 'Ocultar Tarefas Concluídas' : 'Exibir Tarefas Concluídas' }}
     </button>

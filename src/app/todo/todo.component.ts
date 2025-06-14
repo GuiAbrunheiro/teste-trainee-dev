@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '../shared/models/todo.model';
 import { TodoService } from '../shared/services/todo.service';
-import { Filter } from 'bad-words'; // import da biblioteca
+import { Filter } from 'bad-words'; 
+import jsPDF from 'jspdf';
+
 
 
 @Component({
@@ -23,6 +25,29 @@ export class TodoComponent implements OnInit {
   this.taskBeingEdited = todo;
   this.newTaskTitle = todo.title; 
 }
+exportToPDF() {
+  const doc = new jsPDF();
+
+  doc.setFontSize(16);
+  doc.text('Lista de Tarefas', 10, 10);
+
+  let y = 20; 
+
+  this.todos.forEach((todo, index) => {
+    const status = todo.completed ? '[X]' : '[ ]';
+    doc.text(`${status} ${todo.title}`, 10, y);
+    y += 10;
+
+    
+    if (y > 280) {
+      doc.addPage();
+      y = 10;
+    }
+  });
+
+  doc.save('lista_de_tarefas.pdf');
+}
+
 
   ngOnInit(): void {
     this.loadTodos();
