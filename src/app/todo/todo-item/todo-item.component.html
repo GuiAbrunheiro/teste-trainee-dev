@@ -5,6 +5,8 @@
       id="task-{{ todo.id }}"
       type="checkbox" [(ngModel)]="todo.completed"
       (change)="onTaskChecked()"
+      required
+      pattern=".*\S+.*"
     />
     <label
       for="task-{{ todo.id }}"
