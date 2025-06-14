@@ -121,8 +121,3 @@ Evitei frameworks pesados de UI (como Material) para manter leveza no projeto.
 
 Gostaria de deixar claro também que acabei tendo problemas no meu computador pessoal e alguns commits foram perdidos, porém tudo foi feito de acordo com oque foi pedido, foi um pazer fazer essa prova e um grande obrigado pela oportunidade.
 
-
-
-
-
-Solução: Ajuste de tipo com cast para HTMLInputElement.
