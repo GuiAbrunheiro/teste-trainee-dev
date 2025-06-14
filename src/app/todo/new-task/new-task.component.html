@@ -5,6 +5,9 @@
   [value]="newTaskTitle"
   (input)="onInputChange($any($event.target).value)"
   placeholder="Digite a tarefa..."
+  required
+  pattern=".*\S+.*"
+  (keydown.enter)="addTask()"
 />
   </div>
   <button class="new-task_button" (click)="addTask()">
