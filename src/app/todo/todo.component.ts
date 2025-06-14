@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '../shared/models/todo.model';
 import { TodoService } from '../shared/services/todo.service';
+import { Filter } from 'bad-words'; // import da biblioteca
+
 
 @Component({
   selector: 'app-todo',
@@ -36,13 +38,21 @@ export class TodoComponent implements OnInit {
 }
 
  addTodo(title: string) {
+  const filter = new Filter();
+
   const titles = title
     .split('|')
     .map(t => t.trim())
-    .filter(t => t.length > 0); 
+    .filter(t => t.length > 0);
+
+  // Verifica se alguma das tarefas contém palavras ofensivas
+  const hasProfanity = titles.some(t => filter.isProfane(t));
+  if (hasProfanity) {
+    alert("Não é permitido cadastrar tarefas com palavras obscenas.");
+    return;
+  }
 
   if (this.editMode && this.taskBeingEdited) {
-    
     const updatedTodo: Todo = {
       ...this.taskBeingEdited,
       title: titles[0]
@@ -51,20 +61,18 @@ export class TodoComponent implements OnInit {
     this.editMode = false;
     this.taskBeingEdited = null;
 
-    
     for (let i = 1; i < titles.length; i++) {
       const newTodo: Todo = {
-        id: Date.now() + i, 
+        id: Date.now() + i,
         title: titles[i],
         completed: false
       };
       this.todoService.addTodo(newTodo);
     }
   } else {
-    
     titles.forEach((t, index) => {
       const newTodo: Todo = {
-        id: Date.now() + index, 
+        id: Date.now() + index,
         title: t,
         completed: false
       };
@@ -72,7 +80,7 @@ export class TodoComponent implements OnInit {
     });
   }
 
-  this.newTaskTitle = ''; 
+  this.newTaskTitle = '';
   this.loadTodos();
 }
 
