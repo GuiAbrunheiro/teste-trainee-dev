@@ -1,0 +1,25 @@
+<div class="todo-container">
+  <div class="todo-form">
+    <app-new-task
+  [(newTaskTitle)]="newTaskTitle"
+  [editMode]="editMode"
+  (taskCreated)="addTodo($event)"
+></app-new-task>
+  </div>
+  <div class="todo-buttons">
+    <button class="toggle-button" (click)="toggleCompletedTasks()">
+      {{ showCompletedTasks ? 'Ocultar Tarefas Concluídas' : 'Exibir Tarefas Concluídas' }}
+    </button>
+    <button (click)="clearCompletedTasks()">Limpar Tarefas Concluídas</button>
+    <button (click)="clearAll()">Limpar Todas as Tarefas</button>
+  </div>
+  <div class="todo-list_container">
+    <div class="todo-list_todo">
+      <app-todo-item
+        *ngFor="let todo of todos"
+        [todo]="todo"
+        (editRequested)="startEdit($event)"
+      ></app-todo-item>
+    </div>
+  </div>
+</div>

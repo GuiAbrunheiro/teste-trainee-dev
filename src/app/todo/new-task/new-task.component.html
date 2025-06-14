@@ -1,0 +1,13 @@
+<div class="new-task">
+  <div class="new-task_input-container">
+    <label class="new-task_label" for="new-task">Título da Tarefa</label>
+    <input
+  [value]="newTaskTitle"
+  (input)="onInputChange($any($event.target).value)"
+  placeholder="Digite a tarefa..."
+/>
+  </div>
+  <button class="new-task_button" (click)="addTask()">
+    Salvar
+  </button>
+</div>
