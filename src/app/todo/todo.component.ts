@@ -31,6 +31,9 @@ export class TodoComponent implements OnInit {
       this.todos = todos;
     });
   }
+  sortTodosByTitle() {
+  this.todos.sort((a, b) => a.title.localeCompare(b.title));
+}
 
  addTodo(title: string) {
   if (this.editMode && this.taskBeingEdited) {
