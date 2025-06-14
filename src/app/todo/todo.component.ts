@@ -3,6 +3,8 @@ import { Todo } from '../shared/models/todo.model';
 import { TodoService } from '../shared/services/todo.service';
 import { Filter } from 'bad-words'; 
 import jsPDF from 'jspdf';
+import Swal from 'sweetalert2';
+
 
 
 
@@ -70,7 +72,6 @@ exportToPDF() {
     .map(t => t.trim())
     .filter(t => t.length > 0);
 
-  // Verifica se alguma das tarefas contém palavras ofensivas
   const hasProfanity = titles.some(t => filter.isProfane(t));
   if (hasProfanity) {
     alert("Não é permitido cadastrar tarefas com palavras obscenas.");
@@ -119,18 +120,44 @@ exportToPDF() {
   }
 
   clearAll() {
-    if (this.todos.length > 0 && confirm('Are you sure you want to clear all tasks?')) {
+  if (this.todos.length === 0) return;
+
+  Swal.fire({
+    title: 'Tem certeza?',
+    text: 'Você realmente deseja limpar todas as tarefas?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sim, limpar tudo!',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6'
+  }).then((result) => {
+    if (result.isConfirmed) {
       this.todoService.clearAll();
       this.loadTodos();
+      Swal.fire('Tudo limpo!', 'Todas as tarefas foram removidas.', 'success');
     }
-  }
+  });
+}
 
   clearCompletedTasks() {
-    if(confirm('Você quer mesmo limpar as tarefas concluídas?')){
-    this.todoService.clearCompletedTasks();
-    this.loadTodos();
+  Swal.fire({
+    title: 'Tem certeza?',
+    text: 'Você deseja limpar apenas as tarefas concluídas?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sim, limpar concluídas!',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.todoService.clearCompletedTasks();
+      this.loadTodos();
+      Swal.fire('Concluídas limpas!', 'As tarefas concluídas foram removidas.', 'success');
     }
-  }
+  });
+}
 
   toggleCompletedTasks() {
     this.showCompletedTasks = !this.showCompletedTasks;
