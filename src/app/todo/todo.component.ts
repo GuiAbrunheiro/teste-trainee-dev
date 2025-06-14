@@ -36,26 +36,46 @@ export class TodoComponent implements OnInit {
 }
 
  addTodo(title: string) {
+  const titles = title
+    .split('|')
+    .map(t => t.trim())
+    .filter(t => t.length > 0); 
+
   if (this.editMode && this.taskBeingEdited) {
+    
     const updatedTodo: Todo = {
       ...this.taskBeingEdited,
-      title: title.trim()
+      title: titles[0]
     };
     this.todoService.updateTodo(updatedTodo);
     this.editMode = false;
     this.taskBeingEdited = null;
+
+    
+    for (let i = 1; i < titles.length; i++) {
+      const newTodo: Todo = {
+        id: Date.now() + i, 
+        title: titles[i],
+        completed: false
+      };
+      this.todoService.addTodo(newTodo);
+    }
   } else {
-    const newTodo: Todo = {
-      id: Date.now(),
-      title: title.trim(),
-      completed: false
-    };
-    this.todoService.addTodo(newTodo);
+    
+    titles.forEach((t, index) => {
+      const newTodo: Todo = {
+        id: Date.now() + index, 
+        title: t,
+        completed: false
+      };
+      this.todoService.addTodo(newTodo);
+    });
   }
 
-  this.newTaskTitle = '';  // limpa o input depois de salvar
+  this.newTaskTitle = ''; 
   this.loadTodos();
 }
+
 
   updateTodo(updatedTodo: Todo) {
     this.todoService.updateTodo(updatedTodo);
